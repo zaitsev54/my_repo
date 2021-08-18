@@ -1,0 +1,9 @@
+---
+  elasticsearch:
+    hosts:
+      elastic001:
+        ansible_connection: docker
+  kibana:
+    hosts:
+      kibana001:
+        ansible_connection: docker

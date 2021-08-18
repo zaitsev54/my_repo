@@ -1,0 +1,6 @@
+---
+  - name: run my module
+    my_netology.my_collection.my_new_module:
+      path: "{{ my_path }}"
+      content: "{{ my_content }}"
+    tags: my_tag   

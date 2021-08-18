@@ -1,0 +1,3 @@
+---
+  my_path: "/tmp/file_name.txt"
+  my_content: "default file content"
