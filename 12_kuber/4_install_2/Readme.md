@@ -1,15 +1,18 @@
 # 12.4. Развертывание кластера на собственных серверах (лекция 2)
 
 ## Подготовил сервера с помошью Vagrant: Vagrantfile
+
 На сервере основной ноды пришлось добавить памяти до 2 ГБ
 
 * Так же понадобилось добавить публичный ключь на все машины для авторизации по SSH
 Сгенерировал ключ
+
 ```bash
 vagrant@node4:~/.ssh$ ssh-keygen -t rsa
 ```
 
 * Скопировал ключ на ноды
+
 ```bash
 vagrant@node4:~$ cd .ssh
 vagrant@node4:~/.ssh$ vi authorized_keys 
@@ -17,17 +20,18 @@ vagrant@node4:~/.ssh$ chmod 600 authorized_keys
 vagrant@node4:~/.ssh$ 
 ```
 
-
 * В group_vars/k8s_cluster поменял параметр на container_manager: containerd
 
 * Сгенерировал hosts.ini на основнании статьти
 
 * Запустил установку через kubespray
+
 ```bash
 alex@upc:~/devops-projects/kuber/kubespray $ ansible-playbook -i inventory/cluster/hosts.ini --become --become-user=root cluster.yml
 ```
 
 * В итоге скрипт отработал частично, не хватает памти на моей машине :( для обработки всех нод, так как нехватает памяти под весь кластер.
+
 ```bash
 TASK [kubernetes/preinstall : Stop if memory is too small for nodes] ***************************************************************************
 fatal: [node1]: FAILED! => {
