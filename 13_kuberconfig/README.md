@@ -189,8 +189,6 @@ postgres-db-disk-postgres-db-0       Bound     nfs-pv   1Gi        RWX          
 
 ### 2. Конфиг для Prod
 
-[Статья](https://humanitec.com/blog/deploy-with-kubectl-hands-on-with-kubernetes) в основе выполнения задания.
-
 #### Фронтэнд
 
 kubectl apply -f [front.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/front.yaml)
