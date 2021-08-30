@@ -6,11 +6,11 @@
 
 #### Фронтэнд + бэкэнд
 
-kubectl apply -f [stage.yaml](https://github)
+kubectl apply -f [stage.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/stage.yaml)
 
 #### БД PostgreSQL statefulset
 
-kubectl apply -f [stage-postgre.yaml](https://github)
+kubectl apply -f [stage-postgre.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/stage-postgres.yaml)
 
 Результат работы команд
 
@@ -193,15 +193,15 @@ postgres-db-disk-postgres-db-0       Bound     nfs-pv   1Gi        RWX          
 
 #### Фронтэнд
 
-kubectl apply -f [front.yaml]()
+kubectl apply -f [front.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/front.yaml)
 
 #### Бэкэнд
 
-kubectl apply -f [back.yaml]()
+kubectl apply -f [back.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/back.yaml)
 
 #### Postgress
 
-kubectl apply -f [prod-postgresql.yaml]()
+kubectl apply -f [prod-postgresql.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/prod-postgresql.yaml)
 
 ```bash
 alex@pclocal:~/devops-projects/myrepo/13_kuberconfig $ sudo kubectl apply -f front.yaml -f back.yaml -f prod-postgres.yaml 
