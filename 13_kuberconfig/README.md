@@ -201,7 +201,7 @@ kubectl apply -f [back.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_k
 
 #### Postgress
 
-kubectl apply -f [prod-postgresql.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/prod-postgresql.yaml)
+kubectl apply -f [prod-postgres.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/prod-postgres.yaml)
 
 ```bash
 alex@pclocal:~/devops-projects/myrepo/13_kuberconfig $ sudo kubectl apply -f front.yaml -f back.yaml -f prod-postgres.yaml 
