@@ -1,21 +1,22 @@
+# Config Back Deployment with PVC v2 (13.2)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: ecommerce
-    tier: backend2
-  name: product-be2
+    tier: back-v2
+  name: prod-b-v2
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: ecommerce2
-      tier: backend2
+      app: ecommerce
+      tier: back-v2
   template:
     metadata:
       labels:
-        app: ecommerce2
-        tier: backend2
+        app: ecommerce
+        tier: back-v2
     spec:
       containers:
       - env:
@@ -31,7 +32,7 @@ spec:
           value: "5432"
         image: chrischinchilla/humanitech-product-be
         imagePullPolicy: "IfNotPresent"
-        name: product-be2
+        name: prod-b-v2
         ports:
         - containerPort: 8080
         volumeMounts:
@@ -40,15 +41,16 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: fileshare
+          claimName: sharedir
+# config back service
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: ecommerce2
-    tier: backend2
-  name: product-be2
+    app: ecommerce
+    tier: back-v2
+  name: prod-b-v2
 spec:
   type: NodePort
   ports:
@@ -56,5 +58,5 @@ spec:
     port: 8080
     targetPort: 8080
   selector:
-    app: ecommerce2
-    tier: backend2
+    app: ecommerce
+    tier: back-v2

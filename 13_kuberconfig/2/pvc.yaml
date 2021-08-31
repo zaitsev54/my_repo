@@ -1,7 +1,9 @@
+# Config PVC from HELM example for NFS
+---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: fileshare
+  name: sharedir
 spec:
   storageClassName: "nfs"
   accessModes:

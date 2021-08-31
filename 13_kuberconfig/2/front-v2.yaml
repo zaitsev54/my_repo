@@ -1,18 +1,19 @@
+# Config Front Deployment with PVC v2 (13.2)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: product-fe2
+    name: prod-f-v2
 spec:
     replicas: 1
     selector:
         matchLabels:
-            app: ecommerce2
-            tier: frontend2
+            app: ecommerce
+            tier: front-v2
     template:
         metadata:
             labels:
-                app: ecommerce2
-                tier: frontend2
+                app: ecommerce
+                tier: front-v2
         spec:
           containers:
           - name: client
@@ -22,20 +23,21 @@ spec:
             - name: http
               containerPort: 8080
             env:
-            - name: PRODUCT_BE_SERVER_URL
-              value: product-be2
+            - name: PROD_B_V2_SERVER_URL
+              value: prod-b-v2
             volumeMounts:
             - name: data
               mountPath: /mnt/nfs   
           volumes:
             - name: data
               persistentVolumeClaim:
-                claimName: fileshare
+                claimName: sharedir
+# Config Front Service
 ---
 apiVersion: v1
 kind: Service
 metadata:
-    name: product-fe2
+    name: prod-f-v2
 spec:
     type: NodePort
     ports:
@@ -43,5 +45,5 @@ spec:
       port: 8080
       targetPort: 8080
     selector:
-        app: ecommerce2
-        tier: frontend2
+        app: ecommerce
+        tier: front-v2

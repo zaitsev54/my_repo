@@ -1,7 +1,44 @@
+# Домашнее задание к занятию "13.2 разделы и монтирование
+
 ## Решение
-Установил Helm, в качестве примера создания pvc выдал это:
-```
-kind: PersistentVolumeClaim
+
+Установил HELM
+
+```bash
+alex@pclocal:~ $ sudo curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 11248  100 11248    0     0  27103      0 --:--:-- --:--:-- --:--:-- 27038
+Downloading https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+
+alex@pclocal:~ $  helm repo add stable https://charts.helm.sh/stable && helm repo update
+"stable" has been added to your repositories
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "stable" chart repository
+Update Complete. ⎈Happy Helming!⎈
+
+alex@pclocal:~ $ sudo helm install nfs-server stable/nfs-server-provisioner
+WARNING: This chart is deprecated
+NAME: nfs-server
+LAST DEPLOYED: Tue Aug 31 23:20:14 2021
+NAMESPACE: policy-my
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+The NFS Provisioner service has now been installed.
+
+A storage class named 'nfs' has now been created
+and is available to provision dynamic volumes.
+
+You can use this storageclass by creating a `PersistentVolumeClaim` with the
+correct storageClassName attribute. For example:
+
+    ---
+    kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
       name: test-dynamic-volume-claim
@@ -13,74 +50,97 @@ kind: PersistentVolumeClaim
         requests:
           storage: 100Mi
 ```
-### Задание 1: подключить для тестового конфига общую папку
-Взял [пример](https://github.com/loshkarevev/Homeworks/blob/main/13.2%20%D1%80%D0%B0%D0%B7%D0%B4%D0%B5%D0%BB%D1%8B%20%D0%B8%20%D0%BC%D0%BE%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/pod-int-volumes.yaml) из лекции. Можно было взять с [сайта](https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/).
 
-Выполнил kubectl apply -f pod-int-volumes.yaml
+## Задание 1: подключить для тестового конфига общую папку
 
-Пишем в один контейнер данные:
+На основании [примера из лекции](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/2/pod-int-volumes.yaml).
+
+Создадим POD
+
+```bash
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl apply -f pod-int-volumes.yaml 
+pod/pod-int-volumes created
+
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl get pods,pv,pvc
+NAME                                      READY   STATUS    RESTARTS   AGE
+pod/nfs-server-nfs-server-provisioner-0   1/1     Running   0          63m
+pod/pod-int-volumes                       2/2     Running   0          20s
 ```
-root@node1:~/kubespray# kubectl exec pod-int-volumes -c busybox -- ls -la /tmp/cache
+
+Пишем в контейнерe busybox:
+
+```bash
+alex@pclocal:~ $ sudo kubectl exec pod-int-volumes -c busybox -- sh -c 'echo "test" > /tmp/cache/test.txt'
+
+alex@pclocal:~ $ sudo kubectl exec pod-int-volumes -c busybox -- ls -la /tmp/cache
 total 12
-drwxrwxrwx    2 root     root          4096 Aug  9 16:34 .
-drwxrwxrwt    1 root     root          4096 Aug  9 16:26 ..
--rw-r--r--    1 root     root             5 Aug  9 16:34 test.txt
+drwxrwxrwx    2 root     root          4096 Aug 31 17:25 .
+drwxrwxrwt    1 root     root          4096 Aug 31 17:23 ..
+-rw-r--r--    1 root     root             5 Aug 31 17:37 test.txt
+
 ```
-На втором читаем:
-```
-root@node1:~/kubespray# kubectl exec pod-int-volumes -c nginx -- ls -la /static
+
+На втором контейнере nginx читаем:
+
+```bash
+alex@pclocal:~ $ sudo kubectl exec pod-int-volumes -c nginx -- ls -la /static
 total 12
-drwxrwxrwx 2 root root 4096 Aug  9 16:34 .
-drwxr-xr-x 1 root root 4096 Aug  9 16:26 ..
--rw-r--r-- 1 root root    5 Aug  9 16:34 test.txt
-```
-### Задание 2: подключить общую папку для прода
-Сделал [pvс3.yaml](https://github.com/loshkarevev/Homeworks/blob/main/13.2%20%D1%80%D0%B0%D0%B7%D0%B4%D0%B5%D0%BB%D1%8B%20%D0%B8%20%D0%BC%D0%BE%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/pvc3.yaml)
+drwxrwxrwx 2 root root 4096 Aug 31 17:25 .
+drwxr-xr-x 1 root root 4096 Aug 31 17:23 ..
+-rw-r--r-- 1 root root    5 Aug 31 17:37 test.txt
 
-Создались и запустились [back2.yaml](https://github.com/loshkarevev/Homeworks/blob/main/13.2%20%D1%80%D0%B0%D0%B7%D0%B4%D0%B5%D0%BB%D1%8B%20%D0%B8%20%D0%BC%D0%BE%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/back2.yaml), [front2.yaml](https://github.com/loshkarevev/Homeworks/blob/main/13.2%20%D1%80%D0%B0%D0%B7%D0%B4%D0%B5%D0%BB%D1%8B%20%D0%B8%20%D0%BC%D0%BE%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/front2.yaml) без pv.
+alex@pclocal:~ $ sudo kubectl exec pod-int-volumes -c nginx -- sh -c 'cat /static/test.txt'
+test
 ```
-Every 2.0s: kubectl get po --all-namespaces                                                                                    node1: Thu Aug 12 17:22:17 2021
 
-NAMESPACE     NAME                                       READY   STATUS             RESTARTS   AGE
-default       front-back-5b8f5b9c5b-98x5t                2/2     Running            35         3d6h
-default       nfs-server-nfs-server-provisioner-0        1/1     Running            1          3d2h
-default       nginx-deployment-66b6c48dd5-fm7wp          1/1     Running            2          3d6h
-default       pod-int-volumes                            2/2     Running            29         3d
-default       postgres-0                                 1/1     Running            2          3d4h
-default       postgresql-db-0                            0/1     CrashLoopBackOff   342        3d2h
-default       product-be-56f584c9b7-ffntb                1/1     Running            2          3d4h
-default       product-be2-6db8586945-n5zfm               1/1     Running            0          21m
-default       product-be2-6db8586945-xq55h               1/1     Running            0          21m
-default       product-fe-56946dbfdc-k8fpp                1/1     Running            2          3d4h
-default       product-fe2-67547c968f-nfcxr               1/1     Running            0          9m4s
-kube-system   calico-kube-controllers-5b4d7b4594-bjsn2   0/1     Shutdown           0          9d
-kube-system   calico-kube-controllers-5b4d7b4594-r9kq8   1/1     Running            7          4d4h
-kube-system   calico-node-vvcc5                          1/1     Running            149        9d
-kube-system   coredns-8474476ff8-dkbdn                   1/1     Running            8          9d
-kube-system   coredns-8474476ff8-x762p                   0/1     Pending            0          9d
-kube-system   dns-autoscaler-7df78bfcfb-87bsm            1/1     Running            8          9d
-kube-system   kube-apiserver-node1                       1/1     Running            9          9d
-kube-system   kube-controller-manager-node1              1/1     Running            9          9d
-kube-system   kube-proxy-lbqp6                           1/1     Running            9          9d
-kube-system   kube-scheduler-node1                       1/1     Running            9          9d
-kube-system   nodelocaldns-cfp6v                         1/1     Running            9          9d
-policy-demo   nginx-6799fc88d8-qw9h5                     1/1     Running            2          3d7h
+## Задание 2: подключить общую папку для прода
+
+Запустил PVC из файла [pvс.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/2/pvc.yaml)
+
+```bash
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl apply -f pvc.yaml 
+persistentvolumeclaim/nfs-share created
+
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl get pvc
+NAME        STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+nfs-share   Pending                                      nfs            4s
 ```
-Пишем файл в бэке, читаем во фронте:
+
+Создал и запустил [back-v2.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/2/back-v2.yaml), [front-v2.yaml](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/2/front-v2.yaml) без pv.
+
+```bash
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl apply -f back-v2.yaml -f front-v2.yaml 
+deployment.apps/prod-b-v2 created
+service/prod-b-v2 created
+deployment.apps/prod-f-v2 created
+service/prod-f-v2 created
 ```
-root@node1:~/kubespray# kubectl exec product-be2-6db8586945-n5zfm -c product-be2 -- ls -la /mnt/nfs
+
+Пишем файл в prod-b-v2:
+
+```bash
+ralex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl exec prod-b-v2-6c59677b54-6wgjm -c prod-b-v2 -- ls -la /mnt/nfs
 total 8
-drwxrwsrwx 2 root root 4096 Aug 12 09:05 .
-drwxr-xr-x 1 root root 4096 Aug 12 17:00 ..
-root@node1:~/kubespray# kubectl exec product-be2-6db8586945-n5zfm -c product-be2 -- sh -c 'echo "test" > /mnt/nfs/test.txt'
-root@node1:~/kubespray# kubectl exec product-be2-6db8586945-n5zfm -c product-be2 -- ls -la /mnt/nfs
+drwxrwsrwx 2 root root 4096 Aug 31 19:05 .
+drwxr-xr-x 1 root root 4096 Aug 31 19:00 ..
+
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl exec prod-b-v2-6c59677b54-6wgjm -c prod-b-v2 -- sh -c 'echo "test2" > /mnt/nfs/test2.txt'
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl exec prod-b-v2-6c59677b54-6wgjm -c prod-b-v2 -- ls -la /mnt/nfs
 total 12
-drwxrwsrwx 2 root root 4096 Aug 12 17:07 .
-drwxr-xr-x 1 root root 4096 Aug 12 17:00 ..
--rw-r--r-- 1 root root    5 Aug 12 17:07 test.txt
-root@node1:~/kubespray# kubectl exec product-fe2-67547c968f-nfcxr -c client -- ls -la /mnt/nfs
+drwxrwsrwx 2 root root 4096 Aug 31 19:07 .
+drwxr-xr-x 1 root root 4096 Aug 31 19:00 ..
+-rw-r--r-- 1 root root    6 Aug 31 19:07 test2.txt
+```
+
+Читаем в prod-f-v2:
+
+```bash
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl exec prod-f-v2-84dd89df78-wnlzg -c client -- ls -la /mnt/nfs
 total 12
-drwxrwsrwx 2 root root 4096 Aug 12 17:07 .
-drwxr-xr-x 1 root root 4096 Aug 12 17:13 ..
--rw-r--r-- 1 root root    5 Aug 12 17:07 test.txt
+drwxrwsrwx 2 root root 4096 Aug 31 19:07 .
+drwxr-xr-x 1 root root 4096 Aug 31 19:13 ..
+-rw-r--r-- 1 root root    6 Aug 31 19:07 test2.txt
+
+alex@pclocal:~/devops-projects/myrepo/13_kuberconfig/2 $ sudo kubectl exec prod-f-v2-84dd89df78-wnlzg -c client -- cat /mnt/nfs/test2.txt
+test2
 ```

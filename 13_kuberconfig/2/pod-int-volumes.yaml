@@ -1,3 +1,4 @@
+# Config Pod with volume from lesson
 apiVersion: v1
 kind: Pod
 metadata:
