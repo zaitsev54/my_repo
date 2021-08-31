@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: product-fe2
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: ecommerce2
+            tier: frontend2
+    template:
+        metadata:
+            labels:
+                app: ecommerce2
+                tier: frontend2
+        spec:
+          containers:
+          - name: client
+            image: chrischinchilla/humanitech-product-fe
+            imagePullPolicy: "IfNotPresent"
+            ports:
+            - name: http
+              containerPort: 8080
+            env:
+            - name: PRODUCT_BE_SERVER_URL
+              value: product-be2
+            volumeMounts:
+            - name: data
+              mountPath: /mnt/nfs   
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: fileshare
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: product-fe2
+spec:
+    type: NodePort
+    ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+    selector:
+        app: ecommerce2
+        tier: frontend2
