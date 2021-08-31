@@ -41,7 +41,7 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: sharedir
+          claimName: shared
 # config back service
 ---
 apiVersion: v1
