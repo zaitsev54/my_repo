@@ -44,7 +44,7 @@ Handling connection for 42439
 ```
 
 Выполним CURL:
-Фронт [CURL FRONT](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/3/2.png).
+![CURL FRONT](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/3/2.png).
 
 Выполним перенаправление для Бэка
 
@@ -55,7 +55,7 @@ Forwarding from [::1]:46621 -> 8080
 ```
 
 Выполним CURL:
-Бэк [CURL BACK](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/3/3.png).
+![CURL BACK](https://github.com/zaitsev54/my_repo/blob/main/13_kuberconfig/3/3.png).
 
 ### Задание 2: Ручное масштабирование
 
