@@ -110,15 +110,18 @@ client = hvac.Client(
 client.is_authenticated()
 
 # Пишем секрет
-client.secrets.kv.v2.create_or_update_secret(
+secret_rs= client.secrets.kv.v2.create_or_update_secret(
     path='my_secret',
     secret=dict(netology='My own secret!!!'),
 )
+print('Secret response of write secret: ',secret_rs)
 
 # Читаем секрет
-client.secrets.kv.v2.read_secret_version(
+secret_rs2 = client.secrets.kv.v2.read_secret_version(
     path='my_secret',
 )
+print('Secret responce of read secret:',secret_rs2)
+
 ```
 
 Запустим скрипт
