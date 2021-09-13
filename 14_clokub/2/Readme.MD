@@ -162,5 +162,7 @@ sh-5.1# python3 script_hvac.py
 Secret response of write secret:  {'request_id': '76860cb8-4a85-966c-a78a-001004c9f712', 'lease_id': '', 'renewable': False, 'lease_duration': 0, 'data': {'created_time': '2021-09-13T16:20:37.329768893Z', 'deletion_time': '', 'destroyed': False, 'version': 3}, 'wrap_info': None, 'warnings': None, 'auth': None}
 Secret responce of read secret: {'request_id': '6f16742d-eb6e-7e6e-c642-61bfc39c2e42', 'lease_id': '', 'renewable': False, 'lease_duration': 0, 'data': {'data': {'netology': 'My own secret!!!'}, 'metadata': {'created_time': '2021-09-13T16:20:37.329768893Z', 'deletion_time': '', 'destroyed': False, 'version': 3}}, 'wrap_info': None, 'warnings': None, 'auth': None}
 sh-5.1# 
-
 ```
+
+Скриншот из Web-интерфейса
+![screenshot](./1.png)
