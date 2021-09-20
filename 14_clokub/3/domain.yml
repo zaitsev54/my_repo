@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  name: netology.ru
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2021-09-20T14:42:48Z"
+  name: domain
+  namespace: default
+  resourceVersion: "661438"
+  uid: 3b362d69-62ea-4a9f-8e2d-996950d952ec
