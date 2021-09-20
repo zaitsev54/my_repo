@@ -17,22 +17,20 @@ serviceaccount/netology-alex created
 ### Как просмотреть список сервис-акаунтов?
 
 ```bash
-<pre><font color="#55FF55"><b>alex@node1</b></font>:<font color="#5555FF"><b>~/devops-projects/myrepo/14_clokub/3</b></font><font color="#55FF55"><b> $</b></font> kubectl get serviceaccounts
+alex@node1:~/devops-projects/myrepo/14_clokub/3 $ kubectl get serviceaccounts
 NAME            SECRETS   AGE
 default         1         22d
 netology-alex   1         59s
 
-<font color="#55FF55"><b>alex@node1</b></font>:<font color="#5555FF"><b>~/devops-projects/myrepo/14_clokub/3</b></font><font color="#55FF55"><b> $</b></font> kubectl get serviceaccount
+alex@node1:~/devops-projects/myrepo/14_clokub/3 $ kubectl get serviceaccount
 NAME            SECRETS   AGE
 default         1         22d
 netology-alex   1         63s
 
-<font color="#55FF55"><b>alex@node1</b></font>:<font color="#5555FF"><b>~/devops-projects/myrepo/14_clokub/3</b></font><font color="#55FF55"><b> $</b></font> kubectl get sa
+alex@node1:~/devops-projects/myrepo/14_clokub/3 $ kubectl get sa
 NAME            SECRETS   AGE
 default         1         22d
 netology-alex   1         65s
-
-</pre>
 ```
 
 ### Как получить информацию в формате YAML и/или JSON?
