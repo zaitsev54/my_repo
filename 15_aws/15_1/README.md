@@ -1,5 +1,7 @@
 ## Решение
 
+### Выполненные команды
+
 ```bash
 alex@node1:~/devops-projects/myrepo/15_aws $ aws configure list
       Name                    Value             Type    Location
@@ -350,11 +352,11 @@ now.
 
 ```
 
-### при применении получил ошибку:
+### при применении получил ошибку
 
 ```
 │ Error: Error creating Client VPN endpoint: InvalidParameterValue: Certificate not found
-│ 	status code: 400, request id: 1cfb4813-3d2b-45fe-bf5b-97b6417f2854
+│  status code: 400, request id: 1cfb4813-3d2b-45fe-bf5b-97b6417f2854
 │ 
 │   with aws_ec2_client_vpn_endpoint.vpn_endpoint,
 │   on main.tf line 55, in resource "aws_ec2_client_vpn_endpoint" "vpn_endpoint":
