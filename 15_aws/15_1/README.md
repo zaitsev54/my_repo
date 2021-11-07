@@ -369,9 +369,6 @@ now.
 ![vpn.png](vpn.png)
 
 
-```bash
-```
-
 ### примечание
 
-делал по [этой](https://adamtheautomator.com/terraform-vpc/) статье.
+делал по [примеру](https://adamtheautomator.com/terraform-vpc/) в статье.
