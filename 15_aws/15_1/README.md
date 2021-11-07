@@ -351,16 +351,25 @@ Note: You didn't use the -out option to save this plan, so Terraform can't guara
 now.
 
 ```
+## Результат отработки коммнад
 
-### при применении получил ошибку
+### VPC
+![vpcs.png](vpcs.png)
 
-```
-│ Error: Error creating Client VPN endpoint: InvalidParameterValue: Certificate not found
-│  status code: 400, request id: 1cfb4813-3d2b-45fe-bf5b-97b6417f2854
-│ 
-│   with aws_ec2_client_vpn_endpoint.vpn_endpoint,
-│   on main.tf line 55, in resource "aws_ec2_client_vpn_endpoint" "vpn_endpoint":
-│   55: resource "aws_ec2_client_vpn_endpoint" "vpn_endpoint" {
+### Подсети
+![subnets.png](subnets.png)
+
+### Шлюз
+![igw.png](igw.png)
+
+### НАТ
+![natgw.png](natgw.png)
+
+### VPN
+![vpn.png](vpn.png)
+
+
+```bash
 ```
 
 ### примечание

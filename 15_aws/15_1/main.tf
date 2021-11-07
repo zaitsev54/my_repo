@@ -2,6 +2,7 @@
 resource "aws_vpc" "Main" {            # Creating VPC here
   cidr_block       = var.main_vpc_cidr # Defining the CIDR block use 10.0.0.0/24 for demo
   instance_tenancy = "default"
+  
 }
 # Create Internet Gateway and attach it to VPC
 resource "aws_internet_gateway" "IGW" { # Creating Internet Gateway
@@ -54,12 +55,12 @@ resource "aws_nat_gateway" "NATgw" {
 
 resource "aws_ec2_client_vpn_endpoint" "vpn_endpoint" {
   description            = "terraform-clientvpn-endpoint"
-  server_certificate_arn = "arn:aws:acm:us-west-2:115289218179:certificate/2bbeae14-cb49-46f1-ac51-74398be279b2"
-  client_cidr_block      = "172.31.0.0/16"
+  server_certificate_arn = "arn:aws:acm:us-east-2:115289218179:certificate/0d501394-6aa8-4223-afb7-a79e36c49e41"
+  client_cidr_block      = "10.0.0.0/16"
 
   authentication_options {
     type                       = "certificate-authentication"
-    root_certificate_chain_arn = "arn:aws:acm:us-west-2:115289218179:certificate/2bbeae14-cb49-46f1-ac51-74398be279b2"
+    root_certificate_chain_arn = "arn:aws:acm:us-east-2:115289218179:certificate/0d501394-6aa8-4223-afb7-a79e36c49e41"
   }
 
   connection_log_options {
@@ -67,7 +68,7 @@ resource "aws_ec2_client_vpn_endpoint" "vpn_endpoint" {
   }
 }
 
-resource "aws_ec2_client_vpn_network_association" "vpn_to_private__association" {
+resource "aws_ec2_client_vpn_network_association" "vpn_to_private_association" {
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.vpn_endpoint.id
   subnet_id              = aws_subnet.privatesubnets.id
 }
@@ -78,26 +79,28 @@ resource "aws_ec2_client_vpn_authorization_rule" "default_vpn_authorization_rule
   authorize_all_groups   = true
 }
 
-
-
+  
 data "aws_ami" "ubuntu" {
   most_recent = true
 
   filter {
     name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
+    }
 
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
-  }
+    }
 
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "terraform" {
+resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-
-}
+  instance_type = "t3.micro"
+  subnet_id = aws_subnet.publicsubnets.id
+  tags = {
+    Name = "HelloWorld"
+  }
+} 
