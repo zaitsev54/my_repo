@@ -56,7 +56,7 @@ resource "aws_nat_gateway" "NATgw" {
 resource "aws_ec2_client_vpn_endpoint" "vpn_endpoint" {
   description            = "terraform-clientvpn-endpoint"
   server_certificate_arn = "arn:aws:acm:us-east-2:115289218179:certificate/0d501394-6aa8-4223-afb7-a79e36c49e41"
-  client_cidr_block      = "10.0.0.0/16"
+  client_cidr_block      = "172.31.0.0/16"
 
   authentication_options {
     type                       = "certificate-authentication"
@@ -101,6 +101,6 @@ resource "aws_instance" "web" {
   instance_type = "t3.micro"
   subnet_id = aws_subnet.publicsubnets.id
   tags = {
-    Name = "HelloWorld"
+    Name = "TestEc"
   }
 } 
